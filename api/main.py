@@ -7,14 +7,12 @@ AUTOR = "Alex Flores López"
 VERSION_MODELO = "modelo_churn_v1"
 
 
-# Modelo de entrada para /predict
 class Cliente(BaseModel):
     antiguedad: int
     cargo_mensual: float
     reclamos: int
 
 
-# Endpoint raíz
 @app.get("/")
 def inicio():
     return {
@@ -24,7 +22,6 @@ def inicio():
     }
 
 
-# Endpoint health
 @app.get("/health")
 def health():
     return {
@@ -34,22 +31,14 @@ def health():
     }
 
 
-# Endpoint predict
 @app.post("/predict")
 def predict(cliente: Cliente):
-
-    # Validación simple
     if cliente.antiguedad < 0 or cliente.antiguedad > 120:
-        return {
-            "error": "La antigüedad debe estar entre 0 y 120"
-        }
+        return {"error": "La antigüedad debe estar entre 0 y 120"}
 
     if cliente.reclamos < 0:
-        return {
-            "error": "Los reclamos no pueden ser negativos"
-        }
+        return {"error": "Los reclamos no pueden ser negativos"}
 
-    # Regla académica simple
     riesgo = (
         cliente.cargo_mensual > 100
         or cliente.reclamos >= 3
@@ -64,7 +53,6 @@ def predict(cliente: Cliente):
     }
 
 
-# Mejora técnica personal
 @app.get("/info")
 def info():
     return {
@@ -75,5 +63,6 @@ def info():
             "antiguedad",
             "cargo_mensual",
             "reclamos"
-        ]
+        ],
+        "mejora": "Endpoint informativo para trazabilidad del modelo"
     }
